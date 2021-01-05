@@ -38,8 +38,12 @@ import { filterImageFromURL, deleteLocalFiles } from "./util/util";
                     "Image URL is required => /filteredimage?image_url={{URL}}"
                 );
             }
-            const filteredImagePath = await filterImageFromURL(imageURL);
-            res.sendFile(filteredImagePath);
+            const filteredImagePath: string = await filterImageFromURL(
+                imageURL
+            );
+            res.status(200).sendFile(filteredImagePath, () => {
+                deleteLocalFiles([filteredImagePath]);
+            });
         }
     );
     // Root Endpoint
